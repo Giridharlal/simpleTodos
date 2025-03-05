@@ -1,48 +1,39 @@
-// Write your code here
 import React, {useState} from 'react'
 import './index.css'
 
-const TodoItem = ({todo, deleteTodo, saveTodo, toggleCompletion}) => {
-  const {id, title, completed} = todo
+const TodoItem = ({todo, deleteTodo, saveTodo}) => {
+  const {id, title} = todo
   const [newValue, setNewValue] = useState(title)
   const [isEditing, setIsEditing] = useState(false)
-  console.log(completed)
+  const [isStriked, setIsStriked] = useState(false) // New state for strike-through
+
   return (
     <li className="todo-item">
       <input
         type="checkbox"
-        checked={completed}
-        onChange={() => toggleCompletion(id)}
+        checked={isStriked}
+        onChange={() => setIsStriked(!isStriked)}
       />
       {!isEditing ? (
-        <p className={completed ? 'strike' : 'todo-title'}>{title}</p>
+        <p className={isStriked ? 'strike' : 'todo-title'}>{title}</p>
       ) : (
-        ''
+        <input
+          type="text"
+          value={newValue}
+          onChange={e => setNewValue(e.target.value)}
+        />
       )}
       {isEditing ? (
-        <>
-          <input
-            type="text"
-            value={newValue}
-            onChange={e => setNewValue(e.target.value)}
-          />
-          <button
-            onClick={() => {
-              saveTodo(id, newValue)
-              setIsEditing(!isEditing)
-            }}
-          >
-            save
-          </button>
-        </>
-      ) : (
         <button
           onClick={() => {
-            setIsEditing(!isEditing)
+            saveTodo(id, newValue)
+            setIsEditing(false)
           }}
         >
-          edit
+          Save
         </button>
+      ) : (
+        <button onClick={() => setIsEditing(true)}>Edit</button>
       )}
       <button className="delete-button" onClick={() => deleteTodo(id)}>
         Delete

@@ -36,60 +36,47 @@ const initialTodosList = [
     id: 8,
     title: 'Get essentials for Sunday car wash',
   },
-  {
-    id: 9,
-    title: 'Buy groceries',
-  },
 ]
 
 const SimpleTodos = () => {
   const [todos, setTodos] = useState(initialTodosList)
+  const [completedTodos, setCompletedTodos] = useState({})
   const [newTitle, setNewTitle] = useState('')
   const [isAdding, setIsAdding] = useState(false)
-  console.log(todos)
 
   const deleteTodo = id => {
-    const updatedTodos = todos.filter(todo => todo.id !== id)
-    setTodos(updatedTodos)
+    setTodos(todos.filter(todo => todo.id !== id))
   }
 
   const saveTodo = (id, value) => {
-    const updatedTodos = todos.map(todo =>
-      todo.id === id ? {...todo, title: value, completed: false} : todo,
+    setTodos(
+      todos.map(todo => (todo.id === id ? {...todo, title: value} : todo)),
     )
-    setTodos(updatedTodos)
   }
 
   const addTodo = title => {
-    const exNumber = title.split(' ')
-    const num = exNumber.at(-1)
-    console.log(exNumber.at(-1))
-    if (isNaN(Number(num))) {
-      const newTodo = {id: todos.length + 1, title, completed: false}
-      setTodos(prevTodos => [...prevTodos, newTodo])
+    const words = title.split(' ')
+    const lastWord = words.at(-1)
+
+    if (isNaN(Number(lastWord))) {
+      setTodos(prevTodos => [...prevTodos, {id: prevTodos.length + 1, title}])
     } else {
-      const text = title.slice(0, -num.length)
-      console.log(text, 'text')
-      console.log('exNumber.length:', -num.length)
-      setTodos(prevTodos => {
-        const newTodos = Array.from({length: num}, (_, i) => ({
+      const text = title.slice(0, -lastWord.length).trim()
+      setTodos(prevTodos => [
+        ...prevTodos,
+        ...Array.from({length: Number(lastWord)}, (_, i) => ({
           id: prevTodos.length + i + 1,
           title: text,
-          completed: false,
-        }))
-        return [...prevTodos, ...newTodos]
-      })
+        })),
+      ])
     }
   }
 
   const toggleCompletion = id => {
-    setTodos(
-      todos.map(todo =>
-        todo.id === id
-          ? {...todo, completed: todo.completed ? !todo.completed : true}
-          : todo,
-      ),
-    )
+    setCompletedTodos(prev => ({
+      ...prev,
+      [id]: !prev[id],
+    }))
   }
 
   return (
@@ -100,6 +87,7 @@ const SimpleTodos = () => {
           <TodoItem
             key={todo.id}
             todo={todo}
+            isCompleted={completedTodos[todo.id] || false}
             deleteTodo={deleteTodo}
             saveTodo={saveTodo}
             toggleCompletion={toggleCompletion}
@@ -107,13 +95,14 @@ const SimpleTodos = () => {
         ))}
       </ul>
       <input
-        type="textbox"
+        type="text"
         value={newTitle}
         onChange={e => setNewTitle(e.target.value)}
       />
       <button
         onClick={() => {
           addTodo(newTitle)
+          setNewTitle('')
           setIsAdding(!isAdding)
         }}
       >
