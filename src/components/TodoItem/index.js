@@ -5,7 +5,7 @@ const TodoItem = ({todo, deleteTodo, saveTodo}) => {
   const {id, title} = todo
   const [newValue, setNewValue] = useState(title)
   const [isEditing, setIsEditing] = useState(false)
-  const [isStriked, setIsStriked] = useState(false) // New state for strike-through
+  const [isStriked, setIsStriked] = useState(false)
 
   return (
     <li className="todo-item">
@@ -13,9 +13,13 @@ const TodoItem = ({todo, deleteTodo, saveTodo}) => {
         type="checkbox"
         checked={isStriked}
         onChange={() => setIsStriked(!isStriked)}
+        id={id}
       />
       {!isEditing ? (
-        <p className={isStriked ? 'strike' : 'todo-title'}>{title}</p>
+        <label htmlFor={id}>
+          {' '}
+          <p className={isStriked ? 'strike' : 'todo-title'}>{title}</p>
+        </label>
       ) : (
         <input
           type="text"

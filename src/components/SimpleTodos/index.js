@@ -95,7 +95,7 @@ const SimpleTodos = () => {
         ))}
       </ul>
       <input
-        type="text"
+        type="textbox"
         value={newTitle}
         onChange={e => setNewTitle(e.target.value)}
       />
