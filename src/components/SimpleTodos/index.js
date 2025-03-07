@@ -81,7 +81,27 @@ const SimpleTodos = () => {
 
   return (
     <div className="simple-todos-container">
-      <h1 className="heading">Simple Todos</h1>
+      <div className="container">
+        <h1 className="heading">Simple Todos</h1>
+        <div>
+          <input
+            type="textbox"
+            value={newTitle}
+            onChange={e => setNewTitle(e.target.value)}
+          />
+          <button
+            className="add-button"
+            onClick={() => {
+              addTodo(newTitle)
+              setNewTitle('')
+              setIsAdding(!isAdding)
+            }}
+          >
+            Add
+          </button>
+        </div>
+      </div>
+
       <ul className="todos-list">
         {todos.map(todo => (
           <TodoItem
@@ -94,20 +114,6 @@ const SimpleTodos = () => {
           />
         ))}
       </ul>
-      <input
-        type="textbox"
-        value={newTitle}
-        onChange={e => setNewTitle(e.target.value)}
-      />
-      <button
-        onClick={() => {
-          addTodo(newTitle)
-          setNewTitle('')
-          setIsAdding(!isAdding)
-        }}
-      >
-        Add
-      </button>
     </div>
   )
 }

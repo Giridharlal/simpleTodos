@@ -1,6 +1,6 @@
 /* Write your CSS here */
 .simple-todos-container {
-  background-color: #ffc2a0;
+  background-color: #ea590b;
   min-height: 100vh;
   padding: 20px;
   font-family: 'Roboto';
@@ -15,4 +15,24 @@
 .todos-list {
   list-style-type: none;
   padding: 0;
+}
+
+.add-button {
+  background-color: #5af30e;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  width: 60px;
+}
+
+.add-button:hover {
+  background-color: #62cc1b;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

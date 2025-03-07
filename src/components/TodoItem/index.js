@@ -9,39 +9,46 @@ const TodoItem = ({todo, deleteTodo, saveTodo}) => {
 
   return (
     <li className="todo-item">
-      <input
-        type="checkbox"
-        checked={isStriked}
-        onChange={() => setIsStriked(!isStriked)}
-        id={id}
-      />
-      {!isEditing ? (
-        <label htmlFor={id}>
-          {' '}
-          <p className={isStriked ? 'strike' : 'todo-title'}>{title}</p>
-        </label>
-      ) : (
+      <div className="input-todo-container">
         <input
-          type="text"
-          value={newValue}
-          onChange={e => setNewValue(e.target.value)}
+          type="checkbox"
+          checked={isStriked}
+          onChange={() => setIsStriked(!isStriked)}
+          id={id}
         />
-      )}
-      {isEditing ? (
-        <button
-          onClick={() => {
-            saveTodo(id, newValue)
-            setIsEditing(false)
-          }}
-        >
-          Save
+        {!isEditing ? (
+          <label htmlFor={id} className="todo-label">
+            <p className={isStriked ? 'strike' : 'todo-title'}>{title}</p>
+          </label>
+        ) : (
+          <input
+            className="input-todo"
+            type="text"
+            value={newValue}
+            onChange={e => setNewValue(e.target.value)}
+          />
+        )}
+      </div>
+      <div>
+        {isEditing ? (
+          <button
+            className="save-button"
+            onClick={() => {
+              saveTodo(id, newValue)
+              setIsEditing(false)
+            }}
+          >
+            Save
+          </button>
+        ) : (
+          <button className="edit-button" onClick={() => setIsEditing(true)}>
+            Edit
+          </button>
+        )}
+        <button className="delete-button" onClick={() => deleteTodo(id)}>
+          Delete
         </button>
-      ) : (
-        <button onClick={() => setIsEditing(true)}>Edit</button>
-      )}
-      <button className="delete-button" onClick={() => deleteTodo(id)}>
-        Delete
-      </button>
+      </div>
     </li>
   )
 }
